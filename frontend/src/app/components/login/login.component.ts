@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +14,12 @@ export class LoginComponent implements OnInit {
   hide_password = true;
   submitted = false
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private app: AppService,
+    private http: HttpClient,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -31,8 +39,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    alert(
-      'Sucess!\n\n' + JSON.stringify(this.loginForm.value, null, 4)
-    );
+    this.app.authenticate(this.loginForm.value, () => {
+      this.router.navigateByUrl('/');
+    });
+    return false;
   }
 }

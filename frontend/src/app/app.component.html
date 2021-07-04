@@ -1,9 +1,30 @@
-<mat-toolbar color="primary" class="app-header">
-  <div><a href="https://m4k.dev/demo" target="_blank" class="logo">To Do List</a></div>
+
+<mat-toolbar class="app-header">
+  <div class="logo">
+    <a href="https://m4k.dev/demo" target="_self" class="logo-text">
+      <mat-icon aria-hidden="false" aria-label="Checklist" class="logo-icon">done_outline</mat-icon>
+      To Do List
+    </a>
+  </div>
   <span class="nav-tool-items">
-    <a mat-button routerLink="login" routerLinkActive="active">Log in</a>
-    <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a>
+    <div [hidden]="authenticated()">
+      <a mat-button routerLink="login" routerLinkActive="active">Log in</a>
+      <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a>
+    </div>
+    <div [hidden]="!authenticated()">
+      <div class="username-text">
+        Logged in as <span>{{username}} </span>
+        <a mat-button mat-raised-button (click)="logout()">Logout</a>
+      </div>
+    </div>
   </span>
 </mat-toolbar>
-
-<router-outlet></router-outlet>
+<div id="wrap">
+  <router-outlet></router-outlet>
+  <div class="container">
+    <p>Id: <span>{{greeting.id}}</span></p>
+    <p>Message: <span>{{greeting.content}}!</span></p>
+  </div>
+  <div class="push"></div>
+</div>
+<footer><a href="https://github.com/m4kpaul">Paweł Makowski</a> {{"\u00A9"}} 2021</footer>
