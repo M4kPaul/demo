@@ -21,7 +21,6 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AppService } from './app.service';
 import { HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HomeComponent } from './components/home/home.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 
 @Injectable()
@@ -40,7 +39,6 @@ export class XhrInterceptor implements HttpInterceptor {
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent,
     TasksComponent
   ],
   imports: [
