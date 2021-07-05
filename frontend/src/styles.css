@@ -120,3 +120,13 @@ footer > a {
   font-weight: 500;
   text-decoration: none;
 }
+
+.green-snackbar {
+  background: #388e3c;
+  color: white;
+}
+
+.red-snackbar {
+  background: #d32f2f;
+  color: white;
+}

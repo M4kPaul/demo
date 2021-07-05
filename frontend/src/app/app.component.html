@@ -7,11 +7,11 @@
     </a>
   </div>
   <span class="nav-tool-items">
-    <div [hidden]="authenticated()">
+    <div *ngIf="!isLoggedIn">
       <a mat-button routerLink="login" routerLinkActive="active">Log in</a>
       <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a>
     </div>
-    <div [hidden]="!authenticated()">
+    <div *ngIf="isLoggedIn">
       <div class="username-text">
         Logged in as <span>{{username}} </span>
         <a mat-button mat-raised-button (click)="logout()">Logout</a>
@@ -21,10 +21,6 @@
 </mat-toolbar>
 <div id="wrap">
   <router-outlet></router-outlet>
-  <div class="container">
-    <p>Id: <span>{{greeting.id}}</span></p>
-    <p>Message: <span>{{greeting.content}}!</span></p>
-  </div>
   <div class="push"></div>
 </div>
 <footer><a href="https://github.com/m4kpaul">Paweł Makowski</a> {{"\u00A9"}} 2021</footer>
