@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo?SSL=false
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo?sslmode=disable
       SPRING_DATASOURCE_USERNAME: m4k
       SPRING_DATASOURCE_PASSWORD: m4k   
     networks:
