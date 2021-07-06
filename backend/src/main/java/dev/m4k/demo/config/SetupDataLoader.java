@@ -1,11 +1,14 @@
 package dev.m4k.demo.config;
 
 import dev.m4k.demo.model.Role;
+import dev.m4k.demo.model.Task;
 import dev.m4k.demo.model.User;
 import dev.m4k.demo.repo.RoleRepository;
+import dev.m4k.demo.repo.TaskRepository;
 import dev.m4k.demo.repo.UserRepository;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -26,6 +29,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
   private RoleRepository roleRepository;
 
   @Autowired
+  private TaskRepository taskRepository;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
 
   @Override
@@ -36,18 +42,20 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
     Role userRole = createRoleIfNotFound(Role.ROLE_USER);
     Role adminRole = createRoleIfNotFound(Role.ROLE_ADMIN);
-    createUserIfNotFound("admin", Set.of(userRole, adminRole));
+    Task task = createTaskIfNotFound("Hello World");
+    createUserIfNotFound("admin", Set.of(userRole, adminRole), List.of(task));
     alreadySetup = true;
   }
 
   @Transactional
-  private final User createUserIfNotFound(final String username, Set<Role> roles) {
+  private final User createUserIfNotFound(final String username, Set<Role> roles, List<Task> tasks) {
     User user = userRepository.findByUsername(username);
     if (user == null) {
       user = new User();
       user.setUsername("admin");
       user.setPassword(passwordEncoder.encode("admin@"));
       user.setRoles(roles);
+      user.setTasks(tasks);
       user.setEnabled(false); // ! disable for prod
       Date now = Calendar.getInstance().getTime();
       user.setCreatedDate(now);
@@ -63,5 +71,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
       role = roleRepository.save(new Role(name));
     }
     return role;
+  }
+
+  @Transactional
+  private final Task createTaskIfNotFound(final String desc) {
+    List<Task> tasks = taskRepository.findByDescription(desc);
+    Task task = null;
+    if (tasks.isEmpty()) {
+      task = taskRepository.save(new Task(desc));
+    }
+    return task;
   }
 }
