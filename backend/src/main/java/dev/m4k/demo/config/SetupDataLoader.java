@@ -6,6 +6,7 @@ import dev.m4k.demo.model.User;
 import dev.m4k.demo.repo.RoleRepository;
 import dev.m4k.demo.repo.TaskRepository;
 import dev.m4k.demo.repo.UserRepository;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +79,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     List<Task> tasks = taskRepository.findByDescription(desc);
     Task task = null;
     if (tasks.isEmpty()) {
-      task = taskRepository.save(new Task(desc));
+      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+      task = taskRepository.save(new Task(desc, sdf.format(Calendar.getInstance().getTime())));
     }
     return task;
   }

@@ -12,5 +12,8 @@ public class TaskRequest {
   private String description;
 
   @NotBlank
+  private String modifiedDate;
+
+  @NotBlank
   private boolean isDone;
 }

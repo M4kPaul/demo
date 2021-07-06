@@ -1,6 +1,5 @@
 package dev.m4k.demo.controller;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import dev.m4k.demo.config.CurrentUser;
 import dev.m4k.demo.dto.LocalUser;
 import dev.m4k.demo.dto.TaskRequest;
@@ -8,15 +7,10 @@ import dev.m4k.demo.model.Task;
 import dev.m4k.demo.model.User;
 import dev.m4k.demo.repo.TaskRepository;
 import dev.m4k.demo.repo.UserRepository;
-import dev.m4k.demo.service.UserService;
-import dev.m4k.demo.util.GeneralUtils;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.swing.text.html.Option;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +62,7 @@ public class TaskController {
   @PreAuthorize("hasRole('USER')")
   public ResponseEntity<?> createTask(@CurrentUser LocalUser localUser, @RequestBody TaskRequest task) {
     try {
-      Task _task = taskRepository.save(new Task(task.getDescription()));
+      Task _task = taskRepository.save(new Task(task.getDescription(), task.getModifiedDate()));
       User user = localUser.getUser();
       List<Task> tasks = user.getTasks();
       tasks.add(_task);
@@ -81,16 +75,16 @@ public class TaskController {
   }
 
   @Transactional
-  @PutMapping("/tasks")
+  @PutMapping("/task/{id}")
   @PreAuthorize("hasRole('USER')")
-  public ResponseEntity<?> updateTask(@CurrentUser LocalUser localUser, @RequestBody TaskRequest task) {
-    Optional<Task> _task = localUser.getUser().getTasks().stream().filter(t -> t.getId() == task.getId()).findFirst();
+  public ResponseEntity<?> updateTask(@PathVariable Long id, @CurrentUser LocalUser localUser, @RequestBody TaskRequest task) {
+    Optional<Task> _task = localUser.getUser().getTasks().stream().filter(t -> t.getId() == id).findFirst();
 
     if (_task.isPresent()) {
       Task updatedTask = _task.get();
       updatedTask.setDescription(task.getDescription());
       updatedTask.setDone(task.isDone());
-      updatedTask.setModifiedDate(Calendar.getInstance().getTime());
+      updatedTask.setModifiedDate(task.getModifiedDate());
       return new ResponseEntity<>(taskRepository.save(updatedTask), HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,13 +92,13 @@ public class TaskController {
   }
 
   @Transactional
-  @DeleteMapping("/tasks")
+  @DeleteMapping("/task/{id}")
   @PreAuthorize("hasRole('USER')")
-  public ResponseEntity<?> deleteTask(@CurrentUser LocalUser localUser, @RequestBody TaskRequest task) {
+  public ResponseEntity<?> deleteTask(@PathVariable Long id, @CurrentUser LocalUser localUser) {
     try {
       User user = localUser.getUser();
       List<Task> tasks = user.getTasks();
-      Task _task = tasks.stream().filter(t -> t.getId() == task.getId()).collect(Collectors.toList()).get(0);
+      Task _task = tasks.stream().filter(t -> t.getId() == id).collect(Collectors.toList()).get(0);
       tasks.remove(_task);
       user.setTasks(tasks);
       userRepository.save(user);
