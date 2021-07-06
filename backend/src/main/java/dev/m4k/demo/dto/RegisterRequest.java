@@ -14,6 +14,7 @@ public class RegisterRequest {
   private Long userID;
 
   @NotEmpty
+  @Size(max = 64)
   private String username;
 
   @Size(min = 6, message = "{Size.userDto.password")
