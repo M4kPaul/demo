@@ -27,21 +27,16 @@ table {
   font-size: 20px;
 }
 
-.mat-column-position {
-    width: 32px;
-    border-right: 1px solid currentColor;
-    padding-right: 24px;
+.mat-column-modify {
     text-align: center;
 }
 
-.mat-column-date {
-    width: 128px;
-    text-align: right;
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type {
+    padding-right: 0;
 }
 
-.mat-column-modify {
-    width: 100px;
-    text-align: right;
+.mat-header-right {
+    width: 126px;
 }
 
 .table-buttons {
@@ -52,4 +47,17 @@ table {
 .new-task-button {
     margin-left: auto;
     margin-right: 5px;
+}
+
+.task-is-done {
+    position: relative;
+}
+
+.task-is-done:after {
+    border-top: 0.15em solid #fff;
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 50%;
+    left: 0;
 }

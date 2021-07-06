@@ -19,26 +19,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 /* Components */
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import {
-  HttpClientModule,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
-} from '@angular/common/http';
-import { TasksComponent } from './components/tasks/tasks.component';
+import { HttpClientModule } from '@angular/common/http';
+import { EditTaskDialog, TasksComponent } from './components/tasks/tasks.component';
 import { AuthInterceptorProviders } from './util/auth.interceptor';
 import { LoginActivate } from './util/login.activate';
 import { MySnackBar } from './util/mysnackbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
-@Injectable()
-export class XhrInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const xhr = req.clone({
-      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest'),
-    });
-    return next.handle(xhr);
-  }
-}
 
 @NgModule({
   declarations: [
@@ -46,6 +33,7 @@ export class XhrInterceptor implements HttpInterceptor {
     LoginComponent,
     RegisterComponent,
     TasksComponent,
+    EditTaskDialog,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +44,7 @@ export class XhrInterceptor implements HttpInterceptor {
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
+    MatDialogModule,
   ],
   providers: [
     AuthInterceptorProviders,

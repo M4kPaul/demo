@@ -126,7 +126,27 @@ footer > a {
   color: white;
 }
 
+.yellow-snackbar {
+  background: #FFEB3B;
+}
+
 .red-snackbar {
   background: #d32f2f;
   color: white;
+}
+
+.mat-dialog-title {
+  text-align: center;
+}
+
+.task-description {
+  width: 100%;
+}
+
+.mat-dialog-actions {
+  display: flex;
+}
+
+.mat-dialog-actions > button {
+  margin-left: auto;
 }

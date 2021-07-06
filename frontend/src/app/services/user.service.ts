@@ -13,12 +13,6 @@ const httpOptions = {
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getUserTask(): Observable<any> {
-    return this.http.get(AppConstants.API_URL + 'tasks', {
-      responseType: 'text',
-    });
-  }
-
   getCurrentUser(): Observable<any> {
     return this.http.get(AppConstants.API_URL + 'user/me', httpOptions);
   }
