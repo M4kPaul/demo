@@ -10,6 +10,7 @@
             <input matInput placeholder="Username" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
             <mat-error *ngIf="submitted && f.username.errors">
                 <mat-error *ngIf="f.username.errors.required">Username is required</mat-error>
+                <mat-error *ngIf="f.username.errors.maxlength">Username is over 64 chararacters long</mat-error>
             </mat-error>
         </mat-form-field>
         
