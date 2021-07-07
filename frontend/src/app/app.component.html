@@ -1,0 +1,26 @@
+
+<mat-toolbar class="app-header">
+  <div class="logo">
+    <a href="https://m4k.dev/demo" target="_self" class="logo-text">
+      <mat-icon aria-hidden="false" aria-label="Checklist" class="logo-icon">done_outline</mat-icon>
+      To Do List
+    </a>
+  </div>
+  <span class="nav-tool-items">
+    <div *ngIf="!isLoggedIn">
+      <a mat-button routerLink="login" routerLinkActive="active">Log in</a>
+      <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a>
+    </div>
+    <div *ngIf="isLoggedIn">
+      <div class="username-text">
+        Logged in as <span>{{username}} </span>
+        <a mat-button mat-raised-button (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </span>
+</mat-toolbar>
+<div id="wrap">
+  <router-outlet></router-outlet>
+  <div class="push"></div>
+</div>
+<footer><a href="https://github.com/m4kpaul">Paweł Makowski</a> {{"\u00A9"}} 2021</footer>

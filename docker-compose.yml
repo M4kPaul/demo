@@ -1,0 +1,47 @@
+version: '3.8'
+ 
+services:
+  app-server:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo?sslmode=disable
+      SPRING_DATASOURCE_USERNAME: m4k
+      SPRING_DATASOURCE_PASSWORD: m4k   
+    networks:
+      - backend
+      - frontend
+ 
+  app-client:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    restart: always
+    depends_on:
+      - app-server
+    networks:
+      - frontend  
+
+  db:
+    image: postgres:13.3
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: demo
+      POSTGRES_USER: m4k
+      POSTGRES_PASSWORD: m4k
+    networks:
+      - backend  
+   
+networks:
+  backend:
+  frontend: 
