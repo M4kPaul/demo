@@ -40,7 +40,6 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type {
 }
 
 .table-buttons {
-    display: flex;
     padding: 10px 0;
 }
 
@@ -60,4 +59,33 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type {
     right: 0;
     top: 50%;
     left: 0;
+}
+.table-buttons > button {
+    min-width: 128px;
+    padding: 0.5em 0;
+}
+
+.table-search-form {
+    min-width: 150px;
+    max-width: 800px;
+    width: 75%;
+    color: #fff;
+}
+
+.table-search-full-width {
+  width: 100%;
+}
+
+.table-navbar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    padding: 3em;
 }

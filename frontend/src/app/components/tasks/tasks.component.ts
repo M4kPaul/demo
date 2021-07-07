@@ -8,7 +8,6 @@ import { MySnackBar } from 'src/app/util/mysnackbar';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { formatDate } from '@angular/common';
 import { Sort } from '@angular/material/sort';
-import { compileClassMetadata, compileDeclareClassMetadata } from '@angular/compiler';
 
 export interface TaskElement {
   id: number;
@@ -25,9 +24,12 @@ export interface TaskElement {
 export class TasksComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['todo', 'date', 'modify'];
   dataSource = new MatTableDataSource<TaskElement>();
+  allTasks = new MatTableDataSource<TaskElement>();
   doneTasks = new Set<TaskElement>();
   hide_done = false;
   errorMessage = '';
+  searchValue = '';
+  isLoading = true;
   newTask: TaskElement = { id: 0, description: "", modifiedDate: "", done: false };
 
   @ViewChild(MatPaginator)
@@ -40,6 +42,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.hide_done = localStorage.getItem('hide') === 'true' ? true : false;
   }
   
   ngAfterViewInit() {
@@ -58,20 +61,31 @@ export class TasksComponent implements OnInit, AfterViewInit {
       }
     }));
   }
-
+  
   getAllTasks() {
     this.taskService.getTasks().subscribe(
       (data: TaskElement[]) => {
-        if (this.hide_done) this.dataSource = new MatTableDataSource<TaskElement>(data.filter(t => !t.done).sort((a, b) => b.id - a.id));
-        else this.dataSource = new MatTableDataSource<TaskElement>(data.sort((a, b) => b.id - a.id));
-        this.doneTasks = new Set<TaskElement>(this.dataSource.data.filter(t => t.done === true));
-        this.dataSource.paginator = this.paginator;
+        if (data && data.length > 0) {
+          this.allTasks = new MatTableDataSource<TaskElement>(data.sort((a, b) => b.id - a.id));
+          this.dataSource.data = this.allTasks.data;
+          if (this.hide_done) this.dataSource = new MatTableDataSource<TaskElement>(data.filter(t => !t.done).sort((a, b) => b.id - a.id));
+          this.doneTasks = new Set<TaskElement>(data.filter(t => t.done === true));
+          this.dataSource.paginator = this.paginator;
+        } else {
+          this.dataSource = new MatTableDataSource<TaskElement>();
+        }
+        this.isLoading = false;
+        this.updateSearch();
       },
       (err) => {
         this.errorMessage = err.error.message;
         this.mySnackBar.openSnackBar("Something went wrong", "red");
       }
     );
+  }
+
+  updateSearch() {
+    this.dataSource.filter = this.searchValue;
   }
 
   toggleDone(task: TaskElement) {
@@ -97,6 +111,7 @@ export class TasksComponent implements OnInit, AfterViewInit {
 
   hideDone() {
     this.hide_done = !this.hide_done;
+    localStorage.setItem('hide', String(this.hide_done));
     this.getAllTasks();
   }
 
