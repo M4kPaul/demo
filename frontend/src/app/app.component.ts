@@ -1,5 +1,6 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { TokenStorageService } from './services/token-storage.service';
 
@@ -13,9 +14,23 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   username: string = '';
 
-  constructor(private router: Router, private tokenStorageService: TokenStorageService) {}
+  constructor(
+    private tokenStorageService: TokenStorageService,
+    public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    if (localStorage.getItem('agree') !== 'true') {
+      const dialogRef = this.dialog.open(InfoDialog, { disableClose: true });
+      
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result != true) {
+          window.location.replace('https://github.com/m4kpaul/demo');
+        } else {
+          localStorage.setItem('agree', 'true');
+        }
+      });
+    }
+
     this.isLoggedIn = !!this.tokenStorageService.getToken();
 
     if (this.isLoggedIn) {
@@ -30,3 +45,9 @@ export class AppComponent implements OnInit {
     window.location.reload();
   }
 }
+
+@Component({
+  selector: 'info-dialog',
+  templateUrl: 'common/info.dialog.html',
+})
+export class InfoDialog {}

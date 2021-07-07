@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private mySnackBar: MySnackBar
+    private mySnackBar: MySnackBar,
   ) {}
 
   ngOnInit(): void {

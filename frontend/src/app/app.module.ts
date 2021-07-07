@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 /* Routing */
 import { AppRoutingModule } from './app-routing.module';
 
-import { AppComponent } from './app.component';
+import { AppComponent, InfoDialog } from './app.component';
 
 /* Angular Material */
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -34,6 +34,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     RegisterComponent,
     TasksComponent,
     EditTaskDialog,
+    InfoDialog
   ],
   imports: [
     BrowserModule,
