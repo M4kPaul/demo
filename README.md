@@ -2,7 +2,7 @@
 
 This is a simple demo To Do List App.
 
-Live demo avaiable at: https://m4k.dev/demo
+Live demo available at: https://m4k.dev/demo
 
 ## Tech stack
 
