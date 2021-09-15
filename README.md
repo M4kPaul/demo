@@ -2,8 +2,6 @@
 
 This is a simple demo To Do List App.
 
-Live demo available at: https://m4k.dev/demo
-
 ## Tech stack
 
 - Spring Boot
